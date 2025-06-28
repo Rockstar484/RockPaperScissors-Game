@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
@@ -27,6 +28,7 @@ public class GameUi extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private String playerChoice;
 	private JButton cutButton, paperButton, rockButton;
+	private int playerScore = 0, botScore = 0;
 
 	public GameUi() {
 		setTitle("Rock paper scissors");
@@ -56,6 +58,10 @@ public class GameUi extends JFrame {
 				((ImageIcon) botOutputImage.getIcon()).getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
 		botOutputImage.setVerticalAlignment(JLabel.NORTH);
 		botOutputPanel.add(botOutputImage, BorderLayout.CENTER);
+		JLabel score = new JLabel("Player: 0 - Bot: 0", JLabel.CENTER);
+		score.setFont(score.getFont().deriveFont(24f));
+		score.setForeground(Color.black);
+		botOutputPanel.add(score, BorderLayout.SOUTH);
 		JPanel playerPanel = new JPanel(new BorderLayout());
 		playerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		playerPanel.setOpaque(false);
@@ -130,6 +136,7 @@ public class GameUi extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if (playerChoice == null) {
+					playSound("src/resources/error.wav");
 					JOptionPane.showMessageDialog(GameUi.this, "Please choose one of them", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
@@ -140,7 +147,7 @@ public class GameUi extends JFrame {
 							.getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
 					if (playerChoice.equals(botChoice)) {
 						playSound("src/resources/draw.wav");
-						JOptionPane.showMessageDialog(GameUi.this, "It's a tie!", "Result",
+						JOptionPane.showMessageDialog(GameUi.this, "Draw!", "Result",
 								JOptionPane.INFORMATION_MESSAGE);
 						cutButton.setEnabled(true);
 						paperButton.setEnabled(true);
@@ -156,6 +163,8 @@ public class GameUi extends JFrame {
 						paperButton.setEnabled(true);
 						rockButton.setEnabled(true);
 						playerChoice = null;
+						playerScore++;
+						score.setText("Player: " + playerScore + " - Bot: " + botScore);
 					} else {
 						playSound("src/resources/lose.wav");
 						JOptionPane.showMessageDialog(GameUi.this, "You lose!", "Result",
@@ -164,8 +173,29 @@ public class GameUi extends JFrame {
 						paperButton.setEnabled(true);
 						rockButton.setEnabled(true);
 						playerChoice = null;
+						botScore++;
+						score.setText("Player: " + playerScore + " - Bot: " + botScore);
 					}
 				}
+			}
+		});
+		JButton reChoice = new JButton("Re-choose");
+		reChoice.setPreferredSize(new Dimension(100, 50));
+		reChoice.setBackground(Color.blue);
+		reChoice.setForeground(Color.white);
+		reChoice.setFocusPainted(false);
+		reChoice.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				playSound("src/resources/button.wav");
+				playerChoice = null;
+				cutButton.setEnabled(true);
+				paperButton.setEnabled(true);
+				rockButton.setEnabled(true);
+				botOutputImage.setIcon(new ImageIcon("src/resources/dauhoi.png"));
+				botOutputImage.setIcon(new ImageIcon(((ImageIcon) botOutputImage.getIcon()).getImage()
+						.getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
 			}
 		});
 		JButton resetButton = new JButton("Reset");
@@ -181,6 +211,9 @@ public class GameUi extends JFrame {
 				botOutputImage.setIcon(new ImageIcon("src/resources/dauhoi.png"));
 				botOutputImage.setIcon(new ImageIcon(((ImageIcon) botOutputImage.getIcon()).getImage()
 						.getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+				playerScore = 0;
+				botScore = 0;
+				score.setText("Player: 0 - Bot: 0");
 			}
 		});
 		resetButton.setPreferredSize(new Dimension(100, 50));
@@ -188,6 +221,7 @@ public class GameUi extends JFrame {
 		resetButton.setForeground(Color.white);
 		resetButton.setFocusPainted(false);
 		thaotac.add(playButton);
+		thaotac.add(reChoice);
 		thaotac.add(resetButton);
 		playerPanel.add(thaotac, BorderLayout.SOUTH);
 		add(botOutputPanel, BorderLayout.CENTER);
@@ -210,6 +244,11 @@ public class GameUi extends JFrame {
 					Clip clip = AudioSystem.getClip();
 					clip.open(audioInputStream);
 					clip.start();
+					clip.addLineListener(event -> {
+					    if (event.getType() == LineEvent.Type.STOP) {
+					        clip.close();
+					    }
+					});
 				} catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
 					ex.printStackTrace();
 					System.err.println("Error playing sound: " + ex.getMessage());
