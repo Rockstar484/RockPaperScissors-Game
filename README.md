@@ -20,6 +20,10 @@ A simple **Rock-Paper-Scissors** desktop game built using **Java Swing**. This g
 - Basic Object-Oriented Programming principles
 
 ---
+## 🎥 Video
+
+- Video: https://www.youtube.com/watch?v=7qBPDCaybDQ
+---
 
 ## 🚀 Getting Started
 
