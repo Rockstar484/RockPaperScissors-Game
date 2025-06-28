@@ -142,9 +142,8 @@ public class GameUi extends JFrame {
 				} else {
 					String[] choices = { "cut", "paper", "rock" };
 					String botChoice = choices[(int) (Math.random() * choices.length)];
-					botOutputImage.setIcon(new ImageIcon("src/resources/" + botChoice + ".png"));
-					botOutputImage.setIcon(new ImageIcon(((ImageIcon) botOutputImage.getIcon()).getImage()
-							.getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+					Image img = new ImageIcon("src/resources/" + botChoice + ".png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+					botOutputImage.setIcon(new ImageIcon(img));
 					if (playerChoice.equals(botChoice)) {
 						playSound("src/resources/draw.wav");
 						JOptionPane.showMessageDialog(GameUi.this, "Draw!", "Result",
