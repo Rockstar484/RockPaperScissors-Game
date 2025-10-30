@@ -35,5 +35,5 @@ A simple **Rock-Paper-Scissors** desktop game built using **Java Swing**. This g
 ### 📥 Installation
 
 ```bash
-git clone https://github.com/river0077/RockPaperScissors-Game
+git clone https://github.com/dxgiang/RockPaperScissors-Game
 cd RockPaperScissors-Game
