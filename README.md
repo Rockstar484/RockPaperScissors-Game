@@ -1,4 +1,4 @@
-# RockPaperScissors-Game 🎮✊✋✌️
+﻿# RockPaperScissors-Game 🎮✊✋✌️
 
 A simple **Rock-Paper-Scissors** desktop game built using **Java Swing**. This game features an interactive GUI that allows a user to play against the computer with real-time feedback.
 
@@ -35,5 +35,5 @@ A simple **Rock-Paper-Scissors** desktop game built using **Java Swing**. This g
 ### 📥 Installation
 
 ```bash
-git clone https://github.com/dxgiang/RockPaperScissors-Game
+git clone https://github.com/Rockstar484/RockPaperScissors-Game
 cd RockPaperScissors-Game
